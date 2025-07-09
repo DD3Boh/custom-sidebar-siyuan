@@ -20,6 +20,11 @@ interface SidebarItem {
   icon?: string
 }
 
+interface SidebarSectionSave {
+  id: string
+  expanded?: boolean
+}
+
 const plugin = usePlugin();
 const sections = ref<SidebarSectionData[]>([]);
 const sectionsFileName = 'sections.json';
@@ -78,10 +83,10 @@ onMounted(async () => {
   const savedSections = await getFileBlob(`data/storage/petal/custom-sidebar/${sectionsFileName}`);
 
   console.log("Loading saved sections from:", savedSections);
-  let parsed: { id: string }[] = [];
+  let parsed: SidebarSectionSave[] = [];
   if (savedSections) {
     const text = await savedSections.text();
-    parsed = JSON.parse(text) as { id: string }[];
+    parsed = JSON.parse(text) as SidebarSectionSave[];
   }
 
   const loadedSections = await Promise.all(parsed.map(async section => {
@@ -98,7 +103,7 @@ onMounted(async () => {
       id: section.id,
       title: info.name || `Section ${sections.value.length + 1}`,
       icon: info.icon,
-      expanded: true,
+      expanded: section.expanded !== undefined ? section.expanded : true,
       items: items
     };
   }));
@@ -107,7 +112,10 @@ onMounted(async () => {
 });
 
 const saveSectionIds = async () => {
-  const sectionsData = sections.value.map(section => ({ id: section.id }));
+  const sectionsData = sections.value.map(section => ({
+    id: section.id,
+    expanded: section.expanded,
+  }));
   const jsonData = JSON.stringify(sectionsData, null, 2);
   console.log("Saving section IDs:", jsonData);
 
@@ -125,6 +133,8 @@ const toggleSectionExpanded = (sectionId: string) => {
   if (section) {
     section.expanded = !section.expanded;
   }
+
+  saveSectionIds();
 }
 
 // Expose functions to be called from main.ts
