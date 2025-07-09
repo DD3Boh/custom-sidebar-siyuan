@@ -135,7 +135,7 @@ export async function getHPathByID(id: BlockId): Promise<string> {
   return request(url, data);
 }
 
-export async function getPathByID(id: BlockId): Promise<string> {
+export async function getPathByID(id: BlockId): Promise<IResDocPath> {
   let data = {
     id: id,
   };

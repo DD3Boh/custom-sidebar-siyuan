@@ -72,3 +72,8 @@ interface IResGetDocInfo {
   refIDs: string[];
   icon: string;
 }
+
+interface IResDocPath {
+  notebook: string;
+  path: string;
+}
