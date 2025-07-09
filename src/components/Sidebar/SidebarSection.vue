@@ -1,7 +1,10 @@
 <template>
   <div class="sidebar-section" @click="handleSectionClick">
     <div class="section-header" v-if="title">
-      <h2 class="section-title">{{ title }}</h2>
+      <div class="title-with-icon">
+        <SyUtf8Icon v-if="icon" :utf8Code="icon" :size="20" />
+        <h2 class="section-title">{{ title }}</h2>
+      </div>
       <button
         v-if="sectionId && canRemove"
         @click.stop="$emit('remove', sectionId)"
@@ -17,10 +20,13 @@
 
 <script setup lang="ts">
 import SyIcon from '../SiyuanTheme/SyIcon.vue'
+import SyUtf8Icon from '../SiyuanTheme/SyUtf8Icon.vue'
+
 const props = defineProps<{
   title?: string;
   sectionId?: string;
   canRemove?: boolean;
+  icon?: string;
 }>();
 
 const emit = defineEmits<{
@@ -59,11 +65,17 @@ const handleSectionClick = () => {
   justify-content: space-between;
 }
 
+.title-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
 .section-title {
   font-size: 1.2em;
   font-weight: bold;
   margin: 0;
-  flex: 1;
 }
 
 .remove-button {

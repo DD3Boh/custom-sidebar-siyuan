@@ -8,7 +8,8 @@ import { getDocInfo } from './api'
 interface SidebarSectionData {
   id: string
   title: string
-  content?: string
+  content?: string,
+  icon?: string
 }
 
 const plugin = usePlugin();
@@ -29,7 +30,8 @@ const addSection = async () => {
   sections.value.push({
     id: clipboard,
     title: docInfo.name || `Section ${sections.value.length + 1}`,
-    content: `This is section ${clipboard}. You can customize this content.`
+    content: `This is section ${clipboard}. You can customize this content.`,
+    icon: docInfo.icon || 'iconDocument',
   })
 }
 
@@ -72,6 +74,7 @@ defineExpose({
       :title="section.title"
       :section-id="section.id"
       :can-remove="sections.length > 1"
+      :icon="section.icon"
       @remove="removeSection"
       @click="onSectionClick"
     >
