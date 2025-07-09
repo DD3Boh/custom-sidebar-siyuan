@@ -52,6 +52,8 @@ const removeSection = (id: string) => {
   if (sections.value.length > 1) {
     sections.value = sections.value.filter(section => section.id !== id)
   }
+
+  saveSectionIds();
 }
 
 const onSectionClick = (id: string) => {
