@@ -3,12 +3,18 @@ import { onMounted, ref } from 'vue'
 import { usePlugin } from './main'
 import SidebarSection from './components/Sidebar/SidebarSection.vue'
 import { openTab } from 'siyuan'
-import { getDocInfo, getFileBlob, putFile } from './api'
+import { getDocInfo, getFileBlob, getPathByID, listDocsByPath, putFile } from './api'
 
 interface SidebarSectionData {
   id: string
   title: string
-  content?: string,
+  icon?: string,
+  items?: SidebarItem[]
+}
+
+interface SidebarItem {
+  id: string
+  title: string
   icon?: string
 }
 
@@ -24,12 +30,18 @@ const addSection = async () => {
 
   // Get doc info from clipboard ID
   const docInfo = await getDocInfo(clipboard);
+  const path = await getPathByID(clipboard);
+  const subDirs = await listDocsByPath(path.notebook, path.path);
 
   sections.value.push({
     id: clipboard,
     title: docInfo.name || `Section ${sections.value.length + 1}`,
-    content: `This is section ${clipboard}. You can customize this content.`,
-    icon: docInfo.icon || 'iconDocument',
+    icon: docInfo.icon,
+    items: subDirs.files.map(doc => ({
+      id: doc.id,
+      title: doc.name.replace(/\.sy$/, ''),
+      icon: doc.icon
+    }))
   })
 
   saveSectionIds();
@@ -69,12 +81,20 @@ onMounted(async () => {
 
   parsed.forEach(async section => {
     const info = await getDocInfo(section.id);
+    const path = await getPathByID(section.id);
+    const subDirs = await listDocsByPath(path.notebook, path.path);
+    const items = subDirs.files.map(doc => ({
+      id: doc.id,
+      title: doc.name.replace(/\.sy$/, ''),
+      icon: doc.icon
+    }));
+
     console.log(`Adding section from saved data: ${section.id}`, info);
     sections.value.push({
       id: section.id,
       title: info.name || `Section ${sections.value.length + 1}`,
-      content: `This is section ${section.id}. You can customize this content.`,
-      icon: info.icon || 'iconDocument',
+      icon: info.icon,
+      items: items
     });
   });
 
@@ -109,12 +129,10 @@ defineExpose({
       :section-id="section.id"
       :can-remove="sections.length > 1"
       :icon="section.icon"
+      :items="section.items"
       @remove="removeSection"
       @click="onSectionClick"
     >
-      <div v-if="section.content" class="section-content">
-        {{ section.content }}
-      </div>
     </SidebarSection>
   </div>
 </template>

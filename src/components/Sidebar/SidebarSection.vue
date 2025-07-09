@@ -14,30 +14,64 @@
         <SyIcon name="iconTrashcan" :size="16" />
       </button>
     </div>
-    <slot></slot>
+
+    <div v-if="items && items.length > 0" class="items-list">
+      <div
+        v-for="item in items"
+        :key="item.id"
+        class="sidebar-item"
+        @click="handleItemClick(item.id, $event)"
+      >
+        <div class="item-content">
+          <SyUtf8Icon v-if="item.icon" :utf8Code="item.icon" :size="16" />
+          <span class="item-title">{{ item.title }}</span>
+        </div>
+      </div>
+    </div>
+
+    <slot v-else></slot>
   </div>
 </template>
 
 <script setup lang="ts">
+import { usePlugin } from '@/main';
 import SyIcon from '../SiyuanTheme/SyIcon.vue'
 import SyUtf8Icon from '../SiyuanTheme/SyUtf8Icon.vue'
+import { openTab } from 'siyuan';
+
+interface SidebarItem {
+  id: string;
+  title: string;
+  icon?: string;
+}
 
 const props = defineProps<{
   title?: string;
   sectionId?: string;
   canRemove?: boolean;
   icon?: string;
+  items?: SidebarItem[];
 }>();
+
+const plugin = usePlugin();
 
 const emit = defineEmits<{
   remove: [id: string];
   click: [id: string];
+  itemClick: [id: string];
 }>();
 
 const handleSectionClick = () => {
   if (props.sectionId) {
     emit('click', props.sectionId);
   }
+};
+
+const handleItemClick = (itemId: string, event: Event) => {
+  event.stopPropagation();
+  emit('itemClick', itemId);
+
+  openTab({ app: plugin.app, doc: { id: itemId } });
 };
 </script>
 
@@ -102,5 +136,40 @@ const handleSectionClick = () => {
 
 .remove-button:hover {
   background-color: var(--b3-theme-error-lighter);
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.sidebar-item:hover {
+  background-color: var(--b3-theme-surface);
+  border-color: var(--b3-border-color);
+}
+
+.item-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.item-title {
+  font-size: 14px;
+  color: var(--b3-theme-on-background);
+  font-weight: 500;
 }
 </style>
