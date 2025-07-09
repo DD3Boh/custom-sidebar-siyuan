@@ -4,6 +4,7 @@ import { usePlugin } from './main'
 import SidebarSection from './components/Sidebar/SidebarSection.vue'
 import { openTab } from 'siyuan'
 import { getDocInfo, getFileBlob, getPathByID, listDocsByPath, putFile } from './api'
+import { VueDraggable } from 'vue-draggable-plus'
 
 interface SidebarSectionData {
   id: string
@@ -111,6 +112,11 @@ const saveSectionIds = async () => {
   await putFile(`data/storage/petal/custom-sidebar/${sectionsFileName}`, false, file);
 }
 
+const onSectionReorder = () => {
+  console.log("Sections reordered:", sections.value.map(s => s.title));
+  saveSectionIds();
+}
+
 // Expose functions to be called from main.ts
 defineExpose({
   addSection,
@@ -123,18 +129,28 @@ defineExpose({
 
 <template>
   <div class="app-container">
-    <SidebarSection
-      v-for="section in sections"
-      :key="section.id"
-      :title="section.title"
-      :section-id="section.id"
-      :can-remove="sections.length > 1"
-      :icon="section.icon"
-      :items="section.items"
-      @remove="removeSection"
-      @click="onSectionClick"
+    <VueDraggable
+      v-model="sections"
+      :animation="200"
+      handle=".section-header"
+      ghost-class="ghost"
+      chosen-class="chosen"
+      drag-class="drag"
+      @end="onSectionReorder"
     >
-    </SidebarSection>
+      <SidebarSection
+        v-for="section in sections"
+        :key="section.id"
+        :title="section.title"
+        :section-id="section.id"
+        :can-remove="sections.length > 1"
+        :icon="section.icon"
+        :items="section.items"
+        @remove="removeSection"
+        @click="onSectionClick"
+      >
+      </SidebarSection>
+    </VueDraggable>
   </div>
 </template>
 
@@ -150,5 +166,21 @@ defineExpose({
   padding: 8px;
   color: var(--b3-theme-on-background);
   font-size: 14px;
+}
+
+/* Drag and drop styles */
+.ghost {
+  opacity: 0.5;
+  background: var(--b3-theme-surface-lighter);
+  border: 2px dashed var(--b3-border-color);
+}
+
+.chosen {
+  cursor: grabbing !important;
+}
+
+.drag {
+  transform: rotate(5deg);
+  opacity: 0.8;
 }
 </style>

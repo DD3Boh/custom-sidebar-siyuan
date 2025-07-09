@@ -97,6 +97,12 @@ const handleItemClick = (itemId: string, event: Event) => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: grab;
+  user-select: none;
+}
+
+.section-header:active {
+  cursor: grabbing;
 }
 
 .title-with-icon {
@@ -104,6 +110,7 @@ const handleItemClick = (itemId: string, event: Event) => {
   align-items: center;
   gap: 8px;
   flex: 1;
+  min-width: 0; /* Allow text to truncate if needed */
 }
 
 .section-title {
