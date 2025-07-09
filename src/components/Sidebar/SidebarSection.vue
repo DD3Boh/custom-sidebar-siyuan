@@ -111,7 +111,7 @@ const handleToggleExpanded = () => {
 .sidebar-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   margin-bottom: 16px;
   border-bottom: 1px solid var(--b3-border-color);
   padding-bottom: 12px;
@@ -200,8 +200,8 @@ const handleToggleExpanded = () => {
 .items-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: 8px;
+  gap: 2px;
+  margin-top: 4px;
   transition: all 0.3s ease;
   opacity: 1;
   max-height: 1000px; /* Large enough to accommodate content */
@@ -217,7 +217,7 @@ const handleToggleExpanded = () => {
 .sidebar-item {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
