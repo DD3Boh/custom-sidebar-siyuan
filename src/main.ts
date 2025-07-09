@@ -1,9 +1,13 @@
 import {
   Dock,
+  getFrontend,
+  openMobileFileById,
+  openTab,
   Plugin,
 } from "siyuan";
 import { createApp } from 'vue'
-import App from './App.vue'
+import AppComponent from './App.vue'
+import { App } from "siyuan";
 
 let plugin = null
 export function usePlugin(pluginProps?: Plugin): Plugin {
@@ -15,6 +19,24 @@ export function usePlugin(pluginProps?: Plugin): Plugin {
     console.error('need bind plugin')
   }
   return plugin;
+}
+
+export function openDoc(
+  docId: string,
+  app: App,
+) {
+  if (!plugin) {
+    console.error('Plugin not initialized, cannot open doc')
+    return;
+  }
+
+  const frontEnd = getFrontend();
+  const isMobile = frontEnd === "mobile" || frontEnd === "browser-mobile"
+
+  if (isMobile)
+      openMobileFileById(app, docId, ['cb-get-all']);
+  else
+    openTab({ app: plugin.app, doc: { id: docId } });
 }
 
 let app = null
@@ -81,7 +103,7 @@ export function init(plugin: Plugin) {
 
           const originalDiv = localDock?.element.querySelector('.custom-dock-content');
           const div = originalDiv.appendChild(document.createElement('div'));
-          app = createApp(App);
+          app = createApp(AppComponent);
           appInstance = app.mount(div);
       },
       destroy() {

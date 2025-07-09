@@ -57,10 +57,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { usePlugin } from '@/main';
+import { openDoc, usePlugin } from '@/main';
 import SyIcon from '../SiyuanTheme/SyIcon.vue'
 import SyUtf8Icon from '../SiyuanTheme/SyUtf8Icon.vue'
-import { openTab } from 'siyuan';
 
 interface SidebarItem {
   id: string;
@@ -97,7 +96,7 @@ const handleItemClick = (itemId: string, event: Event) => {
   event.stopPropagation();
   emit('itemClick', itemId);
 
-  openTab({ app: plugin.app, doc: { id: itemId } });
+  openDoc(itemId, plugin.app);
 };
 
 const handleToggleExpanded = () => {

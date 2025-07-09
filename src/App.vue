@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { usePlugin } from './main'
+import { openDoc, usePlugin } from './main'
 import SidebarSection from './components/Sidebar/SidebarSection.vue'
-import { openTab } from 'siyuan'
 import { getDocInfo, getFileBlob, getPathByID, listDocsByPath, putFile } from './api'
 import { VueDraggable } from 'vue-draggable-plus'
 
@@ -67,7 +66,7 @@ const removeSection = (id: string) => {
 const onSectionClick = (id: string) => {
   console.log(`Section clicked: ${id}`);
 
-  openTab({ app: plugin.app, doc: { id } });
+  openDoc(id, plugin.app);
 }
 
 const addFromClipboard = async (): Promise<string | undefined> => {
