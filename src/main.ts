@@ -54,7 +54,7 @@ export function init(plugin: Plugin) {
               </div>`;
           } else {
               dock.element.innerHTML = `<div class="fn__flex-1 fn__flex-column">
-              <div class="block__icons custom-dock">
+              <div class="block__icons">
                   <div class="block__logo">
                       <svg class="block__logoicon"><use xlink:href="#iconEmoji"></use></svg>
                       Custom Dock
@@ -62,8 +62,7 @@ export function init(plugin: Plugin) {
                   <span class="fn__flex-1 fn__space"></span>
                   <span data-type="min" class="block__icon b3-tooltips b3-tooltips__sw"><svg class="block__logoicon"><use xlink:href="#iconMin"></use></svg></span>
               </div>
-              <div class="fn__flex-1 plugin-sample__custom-dock">
-                  ${dock.data.text}
+              <div class="fn__flex-1 custom-dock-content">
               </div>
               </div>`;
           }
@@ -71,7 +70,7 @@ export function init(plugin: Plugin) {
           console.log("init dock:", DOCK_TYPE, dock);
           console.log("dock element:", dock.element);
 
-          const originalDiv = localDock?.element.querySelector('.custom-dock');
+          const originalDiv = localDock?.element.querySelector('.custom-dock-content');
           const div = originalDiv.appendChild(document.createElement('div'));
           app = createApp(App);
           app.mount(div);
