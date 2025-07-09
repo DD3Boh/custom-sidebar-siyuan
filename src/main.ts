@@ -33,9 +33,7 @@ export function init(plugin: Plugin) {
         title: "Custom Dock",
         hotkey: "⌥⌘W",
       },
-      data: {
-          text: "This is my custom dock"
-      },
+      data: {},
       type: DOCK_TYPE,
       resize() {
         console.log(DOCK_TYPE + " resize");
@@ -49,8 +47,7 @@ export function init(plugin: Plugin) {
               <svg class="toolbar__icon"><use xlink:href="#iconEmoji"></use></svg>
                   <div class="toolbar__text">Custom Dock</div>
               </div>
-              <div class="fn__flex-1 plugin-sample__custom-dock">
-                  ${dock.data.text}
+              <div class="fn__flex-1 custom-dock-content">
               </div>
               </div>`;
           } else {
