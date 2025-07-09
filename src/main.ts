@@ -18,6 +18,7 @@ export function usePlugin(pluginProps?: Plugin): Plugin {
 }
 
 let app = null
+let appInstance = null
 let localDock: Dock = null
 export function init(plugin: Plugin) {
   // bind plugin hook
@@ -60,6 +61,7 @@ export function init(plugin: Plugin) {
                       Custom Dock
                   </div>
                   <span class="fn__flex-1 fn__space"></span>
+                  <span data-type="add-section" class="block__icon b3-tooltips b3-tooltips__sw" title="Add new section"><svg class="block__logoicon"><use xlink:href="#iconAdd"></use></svg></span>
                   <span data-type="min" class="block__icon b3-tooltips b3-tooltips__sw"><svg class="block__logoicon"><use xlink:href="#iconMin"></use></svg></span>
               </div>
               <div class="fn__flex-1 custom-dock-content">
@@ -70,10 +72,20 @@ export function init(plugin: Plugin) {
           console.log("init dock:", DOCK_TYPE, dock);
           console.log("dock element:", dock.element);
 
+          // Add event listener for the add section button
+          const addButton = dock.element.querySelector('[data-type="add-section"]');
+          if (addButton) {
+            addButton.addEventListener('click', () => {
+              if (appInstance && appInstance.addSection) {
+                appInstance.addSection();
+              }
+            });
+          }
+
           const originalDiv = localDock?.element.querySelector('.custom-dock-content');
           const div = originalDiv.appendChild(document.createElement('div'));
           app = createApp(App);
-          app.mount(div);
+          appInstance = app.mount(div);
       },
       destroy() {
           console.log("destroy dock:", DOCK_TYPE);
