@@ -61,8 +61,8 @@ export function init(plugin: Plugin) {
                       Custom Dock
                   </div>
                   <span class="fn__flex-1 fn__space"></span>
-                  <span data-type="add-section" class="block__icon b3-tooltips b3-tooltips__sw" title="Add new section"><svg class="block__logoicon"><use xlink:href="#iconAdd"></use></svg></span>
-                  <span data-type="min" class="block__icon b3-tooltips b3-tooltips__sw"><svg class="block__logoicon"><use xlink:href="#iconMin"></use></svg></span>
+                  <span data-type="add-section" class="block__icon b3-tooltips b3-tooltips__sw" aria-label="Add new section"><svg class="block__logoicon"><use xlink:href="#iconAdd"></use></svg></span>
+                  <span data-type="min" class="block__icon b3-tooltips b3-tooltips__sw" aria-label="Min Ctrl+W"><svg class="block__logoicon"><use xlink:href="#iconMin"></use></svg></span>
               </div>
               <div class="fn__flex-1 custom-dock-content">
               </div>
