@@ -1,7 +1,7 @@
 {
-  "name": "plugin-sample-vite-vue",
-  "author": "wetoria",
-  "url": "https://github.com/Wetoria/plugin-sample-vite-vue",
+  "name": "custom-sidebar",
+  "author": "DD3Boh",
+  "url": "https://github.com/DD3Boh/custom-sidebar-siyuan",
   "version": "0.0.1",
   "minAppVersion": "2.10.14",
   "backends": [
@@ -11,23 +11,27 @@
     "all"
   ],
   "displayName": {
-    "default": "zh_CN",
-    "en_US": "plugin-sample-vite-vue",
-    "zh_CN": "plugin-sample-vite-vue"
+    "default": "en_US",
+    "en_US": "custom-sidebar",
+    "zh_CN": "custom-sidebar"
   },
   "description": {
-    "default": "zh_CN",
-    "en_US": "plugin-sample-vite-vue",
-    "zh_CN": "plugin-sample-vite-vue"
+    "default": "en_US",
+    "en_US": "custom-sidebar",
+    "zh_CN": "custom-sidebar"
   },
   "readme": {
-    "default": "zh_CN",
+    "default": "en_US",
     "en_US": "README.md",
     "zh_CN": "README_zh_CN.md"
   },
   "funding": {
     "custom": [
+      "https://paypal.me/DD3Boh"
     ]
   },
-  "keywords": []
+  "keywords": [
+    "custom",
+    "sidebar"
+  ]
 }
