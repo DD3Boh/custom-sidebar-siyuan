@@ -288,6 +288,16 @@ export async function transferBlockRef(
   return request(url, data);
 }
 
+export async function getDocInfo(
+  id: DocumentId
+): Promise<IResGetDocInfo> {
+  let data = {
+    id: id,
+  };
+  let url = "/api/block/getDocInfo";
+  return request(url, data);
+}
+
 // **************************************** Attributes ****************************************
 export async function setBlockAttrs(
   id: BlockId,

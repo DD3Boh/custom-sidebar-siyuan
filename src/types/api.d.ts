@@ -62,3 +62,13 @@ interface IResForwardProxy {
 interface IResExportResources {
   path: string;
 }
+
+interface IResGetDocInfo {
+  id: string;
+  rootId: string;
+  name: string;
+  refCount: number;
+  subFileCount: number;
+  refIDs: string[];
+  icon: string;
+}
