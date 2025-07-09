@@ -11,6 +11,7 @@ interface SidebarSectionData {
   title: string
   icon?: string,
   items?: SidebarItem[]
+  expanded?: boolean
 }
 
 interface SidebarItem {
@@ -38,6 +39,7 @@ const addSection = async () => {
     id: clipboard,
     title: docInfo.name || `Section ${sections.value.length + 1}`,
     icon: docInfo.icon,
+    expanded: true,
     items: subDirs.files.map(doc => ({
       id: doc.id,
       title: doc.name.replace(/\.sy$/, ''),
@@ -96,6 +98,7 @@ onMounted(async () => {
       id: section.id,
       title: info.name || `Section ${sections.value.length + 1}`,
       icon: info.icon,
+      expanded: true,
       items: items
     };
   }));
@@ -115,6 +118,13 @@ const saveSectionIds = async () => {
 const onSectionReorder = () => {
   console.log("Sections reordered:", sections.value.map(s => s.title));
   saveSectionIds();
+}
+
+const toggleSectionExpanded = (sectionId: string) => {
+  const section = sections.value.find(s => s.id === sectionId);
+  if (section) {
+    section.expanded = !section.expanded;
+  }
 }
 
 // Expose functions to be called from main.ts
@@ -146,8 +156,10 @@ defineExpose({
         :can-remove="sections.length > 1"
         :icon="section.icon"
         :items="section.items"
+        :expanded="section.expanded"
         @remove="removeSection"
         @click="onSectionClick"
+        @toggle-expanded="toggleSectionExpanded"
       >
       </SidebarSection>
     </VueDraggable>

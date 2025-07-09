@@ -1,8 +1,26 @@
 <template>
-  <div class="sidebar-section" @click="handleSectionClick">
+  <div
+    class="sidebar-section"
+    @click="handleSectionClick"
+    @mouseenter="isHovered = true"
+    @mouseleave="isHovered = false"
+  >
     <div class="section-header" v-if="title">
       <div class="title-with-icon">
-        <SyUtf8Icon v-if="icon" :utf8Code="icon" :size="20" />
+        <!-- Show expand/collapse icon on hover, otherwise show regular icon -->
+        <div class="icon-container" @click.stop="handleToggleExpanded">
+          <SyIcon
+            v-if="isHovered && items && items.length > 0"
+            :name="expanded ? 'iconDown' : 'iconRight'"
+            :size="10"
+            class="expand-icon"
+          />
+          <SyUtf8Icon
+            v-else-if="icon"
+            :utf8Code="icon"
+            :size="20"
+          />
+        </div>
         <h2 class="section-title">{{ title }}</h2>
       </div>
       <button
@@ -15,7 +33,11 @@
       </button>
     </div>
 
-    <div v-if="items && items.length > 0" class="items-list">
+    <div
+      v-if="items && items.length > 0 && expanded"
+      class="items-list"
+      :class="{ 'collapsed': !expanded }"
+    >
       <div
         v-for="item in items"
         :key="item.id"
@@ -34,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { usePlugin } from '@/main';
 import SyIcon from '../SiyuanTheme/SyIcon.vue'
 import SyUtf8Icon from '../SiyuanTheme/SyUtf8Icon.vue'
@@ -51,14 +74,17 @@ const props = defineProps<{
   canRemove?: boolean;
   icon?: string;
   items?: SidebarItem[];
+  expanded?: boolean;
 }>();
 
 const plugin = usePlugin();
+const isHovered = ref(false);
 
 const emit = defineEmits<{
   remove: [id: string];
   click: [id: string];
   itemClick: [id: string];
+  'toggle-expanded': [id: string];
 }>();
 
 const handleSectionClick = () => {
@@ -72,6 +98,12 @@ const handleItemClick = (itemId: string, event: Event) => {
   emit('itemClick', itemId);
 
   openTab({ app: plugin.app, doc: { id: itemId } });
+};
+
+const handleToggleExpanded = () => {
+  if (props.sectionId) {
+    emit('toggle-expanded', props.sectionId);
+  }
 };
 </script>
 
@@ -113,6 +145,26 @@ const handleItemClick = (itemId: string, event: Event) => {
   min-width: 0; /* Allow text to truncate if needed */
 }
 
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  width: 24px;
+  height: 24px;
+}
+
+.icon-container:hover {
+  background-color: var(--b3-theme-surface);
+}
+
+.expand-icon {
+  color: var(--b3-theme-on-surface);
+  transition: transform 0.2s ease;
+}
+
 .section-title {
   font-size: 1.2em;
   font-weight: bold;
@@ -150,6 +202,16 @@ const handleItemClick = (itemId: string, event: Event) => {
   flex-direction: column;
   gap: 4px;
   margin-top: 8px;
+  transition: all 0.3s ease;
+  opacity: 1;
+  max-height: 1000px; /* Large enough to accommodate content */
+  overflow: hidden;
+}
+
+.items-list.collapsed {
+  opacity: 0;
+  max-height: 0;
+  margin-top: 0;
 }
 
 .sidebar-item {
