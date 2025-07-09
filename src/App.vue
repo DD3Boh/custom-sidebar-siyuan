@@ -81,7 +81,7 @@ onMounted(async () => {
     parsed = JSON.parse(text) as { id: string }[];
   }
 
-  parsed.forEach(async section => {
+  const loadedSections = await Promise.all(parsed.map(async section => {
     const info = await getDocInfo(section.id);
     const path = await getPathByID(section.id);
     const subDirs = await listDocsByPath(path.notebook, path.path);
@@ -91,16 +91,15 @@ onMounted(async () => {
       icon: doc.icon
     }));
 
-    console.log(`Adding section from saved data: ${section.id}`, info);
-    sections.value.push({
+    return {
       id: section.id,
       title: info.name || `Section ${sections.value.length + 1}`,
       icon: info.icon,
       items: items
-    });
-  });
+    };
+  }));
 
-  console.log('Saved sections:', parsed);
+  sections.value = loadedSections;
 });
 
 const saveSectionIds = async () => {
