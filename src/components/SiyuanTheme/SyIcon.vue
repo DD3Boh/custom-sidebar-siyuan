@@ -2,9 +2,9 @@
   <div class="enIconContainer">
     <svg
       :style="{
-        fontSize: size,
-        width: size,
-        height: size,
+        fontSize: sizeWithUnit,
+        width: sizeWithUnit,
+        height: sizeWithUnit,
         color: disabled ? 'var(--b3-empty-color)' : undefined,
       }"
       class="enSyIcon"
@@ -15,13 +15,22 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   name: String,
   size: {
     type: [Number, String],
     default: 12,
   },
   disabled: Boolean,
+})
+
+const sizeWithUnit = computed(() => {
+  if (typeof props.size === 'string') {
+    return props.size
+  }
+  return `${props.size}px`
 })
 </script>
 
