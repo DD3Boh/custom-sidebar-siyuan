@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { usePlugin } from './main'
 import SidebarSection from './components/Sidebar/SidebarSection.vue'
+import { openTab } from 'siyuan'
 
 interface SidebarSectionData {
   id: string
   title: string
   content?: string
 }
+
+const plugin = usePlugin();
 
 const sections = ref<SidebarSectionData[]>([
   { id: '1', title: 'Home', content: 'Welcome to your custom sidebar!' }
@@ -32,6 +36,12 @@ const removeSection = (id: string) => {
   }
 }
 
+const onSectionClick = (id: string) => {
+  console.log(`Section clicked: ${id}`);
+
+  openTab({ app: plugin.app, doc: { id } });
+}
+
 const addFromClipboard = async (): Promise<string | undefined> => {
   const id = await navigator.clipboard.readText();
   if (!id) {
@@ -45,7 +55,8 @@ const addFromClipboard = async (): Promise<string | undefined> => {
 defineExpose({
   addSection,
   removeSection,
-  addFromClipboard
+  addFromClipboard,
+  onSectionClick
 })
 </script>
 
@@ -58,6 +69,7 @@ defineExpose({
       :section-id="section.id"
       :can-remove="sections.length > 1"
       @remove="removeSection"
+      @click="onSectionClick"
     >
       <div v-if="section.content" class="section-content">
         {{ section.content }}

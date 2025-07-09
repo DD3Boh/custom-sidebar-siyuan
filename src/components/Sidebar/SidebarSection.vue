@@ -1,14 +1,14 @@
 <template>
-  <div class="sidebar-section">
+  <div class="sidebar-section" @click="handleSectionClick">
     <div class="section-header" v-if="title">
       <h2 class="section-title">{{ title }}</h2>
       <button
         v-if="sectionId && canRemove"
-        @click="$emit('remove', sectionId)"
+        @click.stop="$emit('remove', sectionId)"
         class="remove-button"
         :title="`Remove ${title} section`"
-      >
-        ×
+        >
+        <SyIcon name="iconTrashcan" :size="16" />
       </button>
     </div>
     <slot></slot>
@@ -16,15 +16,23 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import SyIcon from '../SiyuanTheme/SyIcon.vue'
+const props = defineProps<{
   title?: string;
   sectionId?: string;
   canRemove?: boolean;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   remove: [id: string];
+  click: [id: string];
 }>();
+
+const handleSectionClick = () => {
+  if (props.sectionId) {
+    emit('click', props.sectionId);
+  }
+};
 </script>
 
 <style scoped>
@@ -35,6 +43,14 @@ defineEmits<{
   margin-bottom: 16px;
   border-bottom: 1px solid var(--b3-border-color);
   padding-bottom: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.sidebar-section:hover {
+  background-color: var(--b3-theme-surface-lighter);
 }
 
 .section-header {
@@ -62,7 +78,14 @@ defineEmits<{
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.sidebar-section:hover .remove-button {
+  opacity: 1;
+  visibility: visible;
 }
 
 .remove-button:hover {
