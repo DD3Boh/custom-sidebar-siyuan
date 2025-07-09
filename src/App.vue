@@ -12,12 +12,16 @@ const sections = ref<SidebarSectionData[]>([
   { id: '1', title: 'Home', content: 'Welcome to your custom sidebar!' }
 ])
 
-const addSection = () => {
-  const newId = (sections.value.length + 1).toString()
+const addSection = async () => {
+  const clipboard = await addFromClipboard();
+  if (!clipboard) {
+    return;
+  }
+
   sections.value.push({
-    id: newId,
-    title: `Section ${newId}`,
-    content: `This is section ${newId}. You can customize this content.`
+    id: clipboard,
+    title: `Section ${clipboard}`,
+    content: `This is section ${clipboard}. You can customize this content.`
   })
 }
 
@@ -28,10 +32,20 @@ const removeSection = (id: string) => {
   }
 }
 
+const addFromClipboard = async (): Promise<string | undefined> => {
+  const id = await navigator.clipboard.readText();
+  if (!id) {
+    return;
+  }
+  console.log(`Adding section with ID: ${id}`);
+  return id;
+};
+
 // Expose functions to be called from main.ts
 defineExpose({
   addSection,
-  removeSection
+  removeSection,
+  addFromClipboard
 })
 </script>
 
