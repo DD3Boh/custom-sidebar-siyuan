@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { usePlugin } from './main'
 import SidebarSection from './components/Sidebar/SidebarSection.vue'
 import { openTab } from 'siyuan'
+import { getDocInfo } from './api'
 
 interface SidebarSectionData {
   id: string
@@ -22,9 +23,12 @@ const addSection = async () => {
     return;
   }
 
+  // Get doc info from clipboard ID
+  const docInfo = await getDocInfo(clipboard);
+
   sections.value.push({
     id: clipboard,
-    title: `Section ${clipboard}`,
+    title: docInfo.name || `Section ${sections.value.length + 1}`,
     content: `This is section ${clipboard}. You can customize this content.`
   })
 }
