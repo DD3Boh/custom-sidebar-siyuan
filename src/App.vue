@@ -13,10 +13,7 @@ interface SidebarSectionData {
 }
 
 const plugin = usePlugin();
-
-const sections = ref<SidebarSectionData[]>([
-  { id: '1', title: 'Home', content: 'Welcome to your custom sidebar!' }
-])
+const sections = ref<SidebarSectionData[]>([]);
 
 const addSection = async () => {
   const clipboard = await addFromClipboard();
