@@ -77,3 +77,33 @@ interface IResDocPath {
   notebook: string;
   path: string;
 }
+
+interface IResDocsByPath {
+  box: string;
+  files: IResDocFileInfo[];
+  path: string;
+}
+
+interface IResDocFileInfo {
+  alias: string;
+  bookmark: string;
+  count: number;
+  ctime: number;
+  dueFlashcardCount: number;
+  flashcardCount: number;
+  hCtime: string;
+  hMtime: string;
+  hSize: string;
+  hidden: boolean;
+  icon: string;
+  id: string;
+  memo: string;
+  mtime: number;
+  name: string;
+  name1: string;
+  newFlashcardCount: number;
+  path: string;
+  size: number;
+  sort: number;
+  subFileCount: number;
+}

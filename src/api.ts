@@ -155,6 +155,18 @@ export async function getIDsByHPath(
   return request(url, data);
 }
 
+export async function listDocsByPath(
+  notebook: NotebookId,
+  path: string
+): Promise<IResDocsByPath> {
+  let data = {
+    notebook: notebook,
+    path: path,
+  };
+  let url = "/api/filetree/listDocsByPath";
+  return request(url, data);
+}
+
 // **************************************** Asset Files ****************************************
 
 export async function upload(
