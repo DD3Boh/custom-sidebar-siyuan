@@ -8,6 +8,7 @@ import {
 import { createApp } from 'vue'
 import AppComponent from './App.vue'
 import { App } from "siyuan";
+import { getSectionSavesFromDisk, saveSectionsToDisk } from "./utils/storage-helper";
 
 let plugin = null
 export function usePlugin(pluginProps?: Plugin): Plugin {
@@ -39,9 +40,12 @@ export function openDoc(
     openTab({ app: plugin.app, doc: { id: docId } });
 }
 
-export function addSectionById(id: string) {
+export async function addSectionById(id: string) {
   if (!appInstance) {
-    console.error('App instance not initialized, cannot add section')
+    console.log('App instance not initialized, saving section to storage');
+    const sections = await getSectionSavesFromDisk();
+    await saveSectionsToDisk(sections.concat({ id, expanded: true }));
+
     return;
   }
 

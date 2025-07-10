@@ -57,8 +57,8 @@ export default class PluginSample extends Plugin {
         const nodeId = event.detail.elements[0].dataset.nodeId || null;
         event.detail.menu.addItem({
           label: "Add to sidebar",
-          click() {
-            if (nodeId) addSectionById(nodeId);
+          async click() {
+            if (nodeId) await addSectionById(nodeId);
           },
         });
       }
