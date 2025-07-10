@@ -4,5 +4,6 @@
   "minimizeTooltip": "最小化 Ctrl+W",
   "removeSectionTooltip": "移除 {title} 部分",
   "sectionFallback": "部分 {number}",
-  "addToSidebar": "添加到侧边栏"
+  "addToSidebar": "添加到侧边栏",
+  "rebuildIndex": "重建索引"
 }

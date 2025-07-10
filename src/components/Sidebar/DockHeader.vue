@@ -7,6 +7,16 @@
       </svg>
       <div class="toolbar__text">{{ actualTitle }}</div>
       <span class="fn__flex-1"></span>
+      <span
+        data-type="refresh"
+        class="toolbar__icon b3-tooltips b3-tooltips__sw"
+        :aria-label="i18n('rebuildIndex')"
+        @click="$emit('refresh')"
+      >
+        <svg class="toolbar__icon">
+          <use xlink:href="#iconRefresh"></use>
+        </svg>
+      </span>
       <span 
         data-type="add-section" 
         class="toolbar__icon b3-tooltips b3-tooltips__sw" 
@@ -38,6 +48,16 @@
         {{ actualTitle }}
       </div>
       <span class="fn__flex-1 fn__space"></span>
+      <span
+        data-type="refresh"
+        class="block__icon b3-tooltips b3-tooltips__sw"
+        :aria-label="i18n('rebuildIndex')"
+        @click="$emit('refresh')"
+      >
+        <svg class="block__logoicon">
+          <use xlink:href="#iconRefresh"></use>
+        </svg>
+      </span>
       <span 
         data-type="add-section" 
         class="block__icon b3-tooltips b3-tooltips__sw" 
@@ -83,6 +103,7 @@ const actualTitle = computed(() => props.title === 'Sidebar' ? i18n('sidebar') :
 defineEmits<{
   'add-section': []
   'minimize': []
+  'refresh': []
 }>()
 
 const isMobile = computed(() => {

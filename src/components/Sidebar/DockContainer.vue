@@ -4,6 +4,7 @@
       :title="actualTitle"
       @add-section="handleAddSection"
       @minimize="handleMinimize"
+      @refresh="handleRefresh"
     />
     <div class="fn__flex-1 custom-dock-content">
       <slot />
@@ -16,6 +17,7 @@ import { computed } from 'vue'
 import { getFrontend } from 'siyuan'
 import DockHeader from './DockHeader.vue'
 import { useI18n } from '@/utils/i18n'
+import { refreshFiletree } from '@/api'
 
 interface Props {
   title?: string
@@ -46,6 +48,10 @@ const handleAddSection = () => {
 
 const handleMinimize = () => {
   emit('minimize')
+}
+
+const handleRefresh = () => {
+  refreshFiletree()
 }
 </script>
 
