@@ -15,16 +15,19 @@ export async function saveSectionsToDisk(sections: SidebarSectionData[] | Sideba
   await putFile(sectionsFilePath, false, file);
 }
 
-export async function loadSectionsFromDisk(): Promise<SidebarSectionData[]> {
+export async function getSectionSavesFromDisk(): Promise<SidebarSectionSave[]> {
   const savedSections = await getFileBlob(sectionsFilePath);
 
-  let parsed: SidebarSectionSave[] = [];
-  if (savedSections) {
-    const text = await savedSections.text();
-    parsed = JSON.parse(text) as SidebarSectionSave[];
-  }
+  if (!savedSections) return [];
 
-  const loadedSections = await Promise.all(parsed.map(async section => {
+  const text = await savedSections.text();
+  return JSON.parse(text) as SidebarSectionSave[];
+}
+
+export async function loadSectionsFromDisk(): Promise<SidebarSectionData[]> {
+  const sections = await getSectionSavesFromDisk();
+
+  const loadedSections = await Promise.all(sections.map(async section => {
     const info = await getDocInfo(section.id);
     const path = await getPathByID(section.id);
     const subDirs = await listDocsByPath(path.notebook, path.path);
