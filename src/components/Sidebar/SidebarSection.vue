@@ -128,14 +128,12 @@ const handleToggleExpanded = () => {
 .sidebar-section {
   display: flex;
   flex-direction: column;
-  gap: 4px;
   margin-bottom: 16px;
   border-bottom: 1px solid var(--b3-border-color);
   padding-bottom: 12px;
   cursor: pointer;
   transition: background-color 0.2s ease;
   border-radius: 4px;
-  padding: 12px;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
@@ -242,7 +240,7 @@ const handleToggleExpanded = () => {
 .sidebar-item {
   display: flex;
   align-items: center;
-  padding: 6px 12px;
+  padding: 4px 6px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
