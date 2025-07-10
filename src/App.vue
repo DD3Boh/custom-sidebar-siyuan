@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { openDoc, usePlugin } from './main'
 import SidebarSection from './components/Sidebar/SidebarSection.vue'
+import DockContainer from './components/Sidebar/DockContainer.vue'
 import { getDocInfo, getFileBlob, getPathByID, listDocsByPath, putFile } from './api'
 import { VueDraggable } from 'vue-draggable-plus'
 
@@ -144,40 +145,50 @@ defineExpose({
   onSectionClick
 })
 
+const handleMinimize = () => {
+  console.log('Dock minimize requested')
+}
+
 </script>
 
 <template>
-  <div class="app-container">
-    <VueDraggable
-      v-model="sections"
-      :animation="200"
-      handle=".section-header"
-      ghost-class="ghost"
-      chosen-class="chosen"
-      drag-class="drag"
-      :delay-on-touch-start="true"
-      :touch-start-threshold="10"
-      :fallback-tolerance="5"
-      :scroll-sensitivity="100"
-      :scroll-speed="20"
-      @end="onSectionReorder"
-    >
-      <SidebarSection
-        v-for="section in sections"
-        :key="section.id"
-        :title="section.title"
-        :section-id="section.id"
-        :can-remove="sections.length > 1"
-        :icon="section.icon"
-        :items="section.items"
-        :expanded="section.expanded"
-        @remove="removeSection"
-        @click="onSectionClick"
-        @toggle-expanded="toggleSectionExpanded"
+  <DockContainer
+    title="Custom Dock"
+    @add-section="addSection"
+    @minimize="handleMinimize"
+  >
+    <div class="app-container">
+      <VueDraggable
+        v-model="sections"
+        :animation="200"
+        handle=".section-header"
+        ghost-class="ghost"
+        chosen-class="chosen"
+        drag-class="drag"
+        :delay-on-touch-start="true"
+        :touch-start-threshold="10"
+        :fallback-tolerance="5"
+        :scroll-sensitivity="100"
+        :scroll-speed="20"
+        @end="onSectionReorder"
       >
-      </SidebarSection>
-    </VueDraggable>
-  </div>
+        <SidebarSection
+          v-for="section in sections"
+          :key="section.id"
+          :title="section.title"
+          :section-id="section.id"
+          :can-remove="sections.length > 1"
+          :icon="section.icon"
+          :items="section.items"
+          :expanded="section.expanded"
+          @remove="removeSection"
+          @click="onSectionClick"
+          @toggle-expanded="toggleSectionExpanded"
+        >
+        </SidebarSection>
+      </VueDraggable>
+    </div>
+  </DockContainer>
 </template>
 
 <style scoped>
