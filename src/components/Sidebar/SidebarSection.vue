@@ -1,6 +1,7 @@
 <template>
   <div
     class="sidebar-section"
+    :class="{ 'mobile-layout': isMobile }"
     @click="handleSectionClick"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
@@ -14,13 +15,13 @@
           <SyIcon
             v-if="(isHovered || isTouched) && items && items.length > 0"
             :name="expanded ? 'iconDown' : 'iconRight'"
-            :size="10"
+            :size="isMobile ? 16 : 10"
             class="expand-icon"
           />
           <SyUtf8Icon
             v-else-if="icon"
             :utf8Code="icon"
-            :size="20"
+            :size="isMobile ? 28 : 20"
           />
         </div>
         <h2 class="section-title">{{ title }}</h2>
@@ -32,7 +33,7 @@
         :class="{ 'mobile-visible': isTouched }"
         :title="i18n('removeSectionTooltip', { title: title })"
         >
-        <SyIcon name="iconTrashcan" :size="16" />
+        <SyIcon name="iconTrashcan" :size="isMobile ? 20 : 16" />
       </button>
     </div>
 
@@ -45,10 +46,15 @@
         v-for="item in items"
         :key="item.id"
         class="sidebar-item"
+        :class="{ 'mobile-item': isMobile }"
         @click="handleItemClick(item.id, $event)"
       >
         <div class="item-content">
-          <SyUtf8Icon v-if="item.icon" :utf8Code="item.icon" :size="16" />
+          <SyUtf8Icon
+            v-if="item.icon"
+            :utf8Code="item.icon"
+            :size="isMobile ? 20 : 16"
+          />
           <span class="item-title">{{ item.title }}</span>
         </div>
       </div>
@@ -59,8 +65,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { openDoc, usePlugin } from '@/main';
+import { getFrontend } from 'siyuan'
 import SyIcon from '../SiyuanTheme/SyIcon.vue'
 import SyUtf8Icon from '../SiyuanTheme/SyUtf8Icon.vue'
 import { useI18n } from '@/utils/i18n'
@@ -85,6 +92,12 @@ const props = defineProps<{
 const plugin = usePlugin();
 const isHovered = ref(false);
 const isTouched = ref(false);
+
+// Add mobile detection
+const isMobile = computed(() => {
+  const frontEnd = getFrontend()
+  return frontEnd === "mobile" || frontEnd === "browser-mobile"
+})
 
 const emit = defineEmits<{
   remove: [id: string];
@@ -138,6 +151,13 @@ const handleToggleExpanded = () => {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Mobile-specific styling for larger touch targets */
+.sidebar-section.mobile-layout {
+  margin-bottom: clamp(10px, 2vw, 16px);
+  padding-bottom: clamp(8px, 1vw, 12px);
+  border-radius: clamp(6px, 1.5vw, 8px);
+}
+
 .sidebar-section:hover {
   background-color: var(--b3-theme-surface-lighter);
 }
@@ -165,6 +185,10 @@ const handleToggleExpanded = () => {
   min-width: 0; /* Allow text to truncate if needed */
 }
 
+.mobile-layout .title-with-icon {
+  gap: clamp(12px, 3vw, 16px);
+}
+
 .icon-container {
   display: flex;
   align-items: center;
@@ -175,6 +199,12 @@ const handleToggleExpanded = () => {
   width: 24px;
   height: 24px;
   touch-action: manipulation;
+}
+
+.mobile-layout .icon-container {
+  width: clamp(32px, 8vw, 48px);
+  height: clamp(32px, 8vw, 48px);
+  border-radius: clamp(6px, 2vw, 8px);
 }
 
 .icon-container:hover {
@@ -190,6 +220,11 @@ const handleToggleExpanded = () => {
   font-size: 1.2em;
   font-weight: bold;
   margin: 0;
+}
+
+.mobile-layout .section-title {
+  font-size: clamp(1.25em, 4vw, 1.5em);
+  line-height: 1.3;
 }
 
 .remove-button {
@@ -208,6 +243,13 @@ const handleToggleExpanded = () => {
   opacity: 0;
   visibility: hidden;
   touch-action: manipulation;
+}
+
+.mobile-layout .remove-button {
+  width: clamp(32px, 8vw, 48px);
+  height: clamp(32px, 8vw, 48px);
+  font-size: clamp(20px, 5vw, 24px);
+  border-radius: clamp(6px, 2vw, 8px);
 }
 
 .sidebar-section:hover .remove-button,
@@ -231,6 +273,11 @@ const handleToggleExpanded = () => {
   overflow: hidden;
 }
 
+.mobile-layout .items-list {
+  gap: clamp(4px, 1vw, 8px);
+  margin-bottom: clamp(8px, 2vw, 12px);
+}
+
 .items-list.collapsed {
   opacity: 0;
   max-height: 0;
@@ -246,6 +293,11 @@ const handleToggleExpanded = () => {
   transition: background-color 0.2s ease;
   border: 1px solid transparent;
   touch-action: manipulation;
+}
+
+.sidebar-item.mobile-item {
+  padding: 5px clamp(10px, 2.5vw, 20px);
+  border-radius: clamp(6px, 1.5vw, 12px);
 }
 
 .sidebar-item:hover {
@@ -264,5 +316,34 @@ const handleToggleExpanded = () => {
   font-size: 14px;
   color: var(--b3-theme-on-background);
   font-weight: 500;
+}
+
+.mobile-item .item-title {
+  font-size: clamp(16px, 4vw, 20px);
+  line-height: 1.4;
+}
+
+/* Additional mobile optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Touch device specific styles */
+  .sidebar-section {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar-item:active {
+    background-color: var(--b3-theme-surface);
+    transform: scale(0.98);
+    transition: all 0.1s ease;
+  }
+
+  .icon-container:active {
+    background-color: var(--b3-theme-surface);
+    transform: scale(0.95);
+  }
+
+  .remove-button:active {
+    background-color: var(--b3-theme-error-lighter);
+    transform: scale(0.95);
+  }
 }
 </style>
