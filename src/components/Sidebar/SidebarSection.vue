@@ -4,13 +4,15 @@
     @click="handleSectionClick"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
+    @touchstart="handleTouchStart"
+    @touchend="handleTouchEnd"
   >
     <div class="section-header" v-if="title">
       <div class="title-with-icon">
         <!-- Show expand/collapse icon on hover, otherwise show regular icon -->
         <div class="icon-container" @click.stop="handleToggleExpanded">
           <SyIcon
-            v-if="isHovered && items && items.length > 0"
+            v-if="(isHovered || isTouched) && items && items.length > 0"
             :name="expanded ? 'iconDown' : 'iconRight'"
             :size="10"
             class="expand-icon"
@@ -27,6 +29,7 @@
         v-if="sectionId && canRemove"
         @click.stop="$emit('remove', sectionId)"
         class="remove-button"
+        :class="{ 'mobile-visible': isTouched }"
         :title="`Remove ${title} section`"
         >
         <SyIcon name="iconTrashcan" :size="16" />
@@ -78,6 +81,7 @@ const props = defineProps<{
 
 const plugin = usePlugin();
 const isHovered = ref(false);
+const isTouched = ref(false);
 
 const emit = defineEmits<{
   remove: [id: string];
@@ -99,6 +103,17 @@ const handleItemClick = (itemId: string, event: Event) => {
   openDoc(itemId, plugin.app);
 };
 
+const handleTouchStart = () => {
+  isTouched.value = true;
+};
+
+const handleTouchEnd = () => {
+  // Delay hiding to prevent flicker
+  setTimeout(() => {
+    isTouched.value = false;
+  }, 100);
+};
+
 const handleToggleExpanded = () => {
   if (props.sectionId) {
     emit('toggle-expanded', props.sectionId);
@@ -118,6 +133,8 @@ const handleToggleExpanded = () => {
   transition: background-color 0.2s ease;
   border-radius: 4px;
   padding: 12px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .sidebar-section:hover {
@@ -130,6 +147,9 @@ const handleToggleExpanded = () => {
   justify-content: space-between;
   cursor: grab;
   user-select: none;
+  touch-action: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
 }
 
 .section-header:active {
@@ -153,6 +173,7 @@ const handleToggleExpanded = () => {
   transition: background-color 0.2s ease;
   width: 24px;
   height: 24px;
+  touch-action: manipulation;
 }
 
 .icon-container:hover {
@@ -185,9 +206,11 @@ const handleToggleExpanded = () => {
   transition: all 0.2s ease;
   opacity: 0;
   visibility: hidden;
+  touch-action: manipulation;
 }
 
-.sidebar-section:hover .remove-button {
+.sidebar-section:hover .remove-button,
+.remove-button.mobile-visible {
   opacity: 1;
   visibility: visible;
 }
@@ -221,6 +244,7 @@ const handleToggleExpanded = () => {
   cursor: pointer;
   transition: background-color 0.2s ease;
   border: 1px solid transparent;
+  touch-action: manipulation;
 }
 
 .sidebar-item:hover {

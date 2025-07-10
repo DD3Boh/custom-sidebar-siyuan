@@ -155,6 +155,11 @@ defineExpose({
       ghost-class="ghost"
       chosen-class="chosen"
       drag-class="drag"
+      :delay-on-touch-start="true"
+      :touch-start-threshold="10"
+      :fallback-tolerance="5"
+      :scroll-sensitivity="100"
+      :scroll-speed="20"
       @end="onSectionReorder"
     >
       <SidebarSection
@@ -181,6 +186,8 @@ defineExpose({
   height: 100%;
   box-sizing: border-box;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: manipulation;
 }
 
 .section-content {
@@ -194,14 +201,5 @@ defineExpose({
   opacity: 0.5;
   background: var(--b3-theme-surface-lighter);
   border: 2px dashed var(--b3-border-color);
-}
-
-.chosen {
-  cursor: grabbing !important;
-}
-
-.drag {
-  transform: rotate(5deg);
-  opacity: 0.8;
 }
 </style>
