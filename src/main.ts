@@ -35,7 +35,7 @@ export function openDoc(
   const isMobile = frontEnd === "mobile" || frontEnd === "browser-mobile"
 
   if (isMobile)
-      openMobileFileById(app, docId, ['cb-get-all']);
+    openMobileFileById(app, docId, ['cb-get-all']);
   else
     openTab({ app: plugin.app, doc: { id: docId } });
 }
