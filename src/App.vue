@@ -35,24 +35,38 @@ const addSection = async () => {
     return;
   }
 
-  // Get doc info from clipboard ID
-  const docInfo = await getDocInfo(clipboard);
-  const path = await getPathByID(clipboard);
-  const subDirs = await listDocsByPath(path.notebook, path.path);
+  await addSectionById(clipboard);
+}
 
-  sections.value.push({
-    id: clipboard,
-    title: docInfo.name || `Section ${sections.value.length + 1}`,
-    icon: docInfo.icon,
-    expanded: true,
-    items: subDirs.files.map(doc => ({
-      id: doc.id,
-      title: doc.name.replace(/\.sy$/, ''),
-      icon: doc.icon
-    }))
-  })
+const addSectionById = async (id: string) => {
+  if (!id) {
+    console.warn('No ID provided to addSectionById');
+    return;
+  }
 
-  saveSectionIds();
+  try {
+    // Get doc info from provided ID
+    const docInfo = await getDocInfo(id);
+    const path = await getPathByID(id);
+    const subDirs = await listDocsByPath(path.notebook, path.path);
+
+    sections.value.push({
+      id: id,
+      title: docInfo.name || `Section ${sections.value.length + 1}`,
+      icon: docInfo.icon,
+      expanded: true,
+      items: subDirs.files.map(doc => ({
+        id: doc.id,
+        title: doc.name.replace(/\.sy$/, ''),
+        icon: doc.icon
+      }))
+    })
+
+    saveSectionIds();
+    console.log(`Section added with ID: ${id}`);
+  } catch (error) {
+    console.error('Error adding section by ID:', error);
+  }
 }
 
 const removeSection = (id: string) => {
@@ -140,6 +154,7 @@ const toggleSectionExpanded = (sectionId: string) => {
 // Expose functions to be called from main.ts
 defineExpose({
   addSection,
+  addSectionById,
   removeSection,
   addFromClipboard,
   onSectionClick

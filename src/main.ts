@@ -39,6 +39,18 @@ export function openDoc(
     openTab({ app: plugin.app, doc: { id: docId } });
 }
 
+export function addSectionById(id: string) {
+  if (!appInstance) {
+    console.error('App instance not initialized, cannot add section')
+    return;
+  }
+
+  if (appInstance.addSectionById)
+    appInstance.addSectionById(id);
+  else
+    console.error('addSectionById method not available on app instance');
+}
+
 let app = null
 let appInstance = null
 let localDock: Dock = null

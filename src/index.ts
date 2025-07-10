@@ -4,7 +4,7 @@ import {
 } from "siyuan";
 import "@/index.scss";
 import PluginInfoString from '@/../plugin.json'
-import { destroy, init } from '@/main'
+import { destroy, init, addSectionById } from '@/main'
 
 let PluginInfo = {
   version: '',
@@ -53,12 +53,12 @@ export default class PluginSample extends Plugin {
     console.log('Plugin loaded, the plugin is ', this)
 
     this.eventBus.on("open-menu-doctree", (event) => {
-      console.log('open-menu-doctree event triggered', event);
       if (event && event.detail) {
+        const nodeId = event.detail.elements[0].dataset.nodeId || null;
         event.detail.menu.addItem({
-          label: "Open Plugin Settings",
-          click(element, event) {
-            console.log('Open Plugin Settings clicked', element, event);
+          label: "Add to sidebar",
+          click() {
+            if (nodeId) addSectionById(nodeId);
           },
         });
       }
