@@ -4,6 +4,7 @@ import {
 } from "siyuan";
 import "@/index.scss";
 import { destroy, init, addSectionById } from '@/main'
+import { i18n } from './utils/i18n';
 
 export default class PluginSample extends Plugin {
   // Run as mobile
@@ -22,7 +23,7 @@ export default class PluginSample extends Plugin {
       if (event && event.detail) {
         const nodeId = event.detail.elements[0].dataset.nodeId || null;
         event.detail.menu.addItem({
-          label: "Add to sidebar",
+          label: i18n("addToSidebar"),
           async click() {
             if (nodeId) await addSectionById(nodeId);
           },

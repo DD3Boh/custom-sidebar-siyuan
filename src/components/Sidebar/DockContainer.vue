@@ -1,7 +1,7 @@
 <template>
   <div class="dock-container" :class="{ 'mobile-layout': isMobile }">
     <DockHeader 
-      :title="title"
+      :title="actualTitle"
       @add-section="handleAddSection"
       @minimize="handleMinimize"
     />
@@ -15,14 +15,20 @@
 import { computed } from 'vue'
 import { getFrontend } from 'siyuan'
 import DockHeader from './DockHeader.vue'
+import { useI18n } from '@/utils/i18n'
 
 interface Props {
   title?: string
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   title: 'Sidebar'
 })
+
+const { i18n } = useI18n()
+
+// Use reactive title that falls back to i18n if no title provided
+const actualTitle = computed(() => props.title === 'Sidebar' ? i18n('sidebar') : props.title)
 
 const emit = defineEmits<{
   'add-section': []

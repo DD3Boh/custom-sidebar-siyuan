@@ -30,7 +30,7 @@
         @click.stop="$emit('remove', sectionId)"
         class="remove-button"
         :class="{ 'mobile-visible': isTouched }"
-        :title="`Remove ${title} section`"
+        :title="i18n('removeSectionTooltip', { title: title })"
         >
         <SyIcon name="iconTrashcan" :size="16" />
       </button>
@@ -63,6 +63,9 @@ import { ref } from 'vue'
 import { openDoc, usePlugin } from '@/main';
 import SyIcon from '../SiyuanTheme/SyIcon.vue'
 import SyUtf8Icon from '../SiyuanTheme/SyUtf8Icon.vue'
+import { useI18n } from '@/utils/i18n'
+
+const { i18n } = useI18n()
 
 interface SidebarItem {
   id: string;

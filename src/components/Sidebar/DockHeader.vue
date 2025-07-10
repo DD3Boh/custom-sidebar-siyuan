@@ -5,12 +5,12 @@
       <svg class="toolbar__icon">
         <use xlink:href="#iconDock"></use>
       </svg>
-      <div class="toolbar__text">{{ title }}</div>
+      <div class="toolbar__text">{{ actualTitle }}</div>
       <span class="fn__flex-1"></span>
       <span 
         data-type="add-section" 
         class="toolbar__icon b3-tooltips b3-tooltips__sw" 
-        aria-label="Add new section"
+        :aria-label="i18n('addNewSection')"
         @click="$emit('add-section')"
       >
         <svg class="toolbar__icon">
@@ -20,7 +20,7 @@
       <span 
         data-type="min" 
         class="toolbar__icon b3-tooltips b3-tooltips__sw" 
-        aria-label="Min Ctrl+W"
+        :aria-label="i18n('minimizeTooltip')"
         @click="$emit('minimize')"
       >
         <svg class="toolbar__icon">
@@ -35,13 +35,13 @@
         <svg class="block__logoicon">
           <use xlink:href="#iconDock"></use>
         </svg>
-        {{ title }}
+        {{ actualTitle }}
       </div>
       <span class="fn__flex-1 fn__space"></span>
       <span 
         data-type="add-section" 
         class="block__icon b3-tooltips b3-tooltips__sw" 
-        aria-label="Add new section"
+        :aria-label="i18n('addNewSection')"
         @click="$emit('add-section')"
       >
         <svg class="block__logoicon">
@@ -51,7 +51,7 @@
       <span 
         data-type="min" 
         class="block__icon b3-tooltips b3-tooltips__sw" 
-        aria-label="Min Ctrl+W"
+        :aria-label="i18n('minimizeTooltip')"
         @click="$emit('minimize')"
       >
         <svg class="block__logoicon">
@@ -65,14 +65,20 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { getFrontend } from 'siyuan'
+import { useI18n } from '@/utils/i18n'
 
 interface Props {
   title?: string
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   title: 'Sidebar'
 })
+
+const { i18n } = useI18n()
+
+// Use reactive title that falls back to i18n if no title provided
+const actualTitle = computed(() => props.title === 'Sidebar' ? i18n('sidebar') : props.title)
 
 defineEmits<{
   'add-section': []

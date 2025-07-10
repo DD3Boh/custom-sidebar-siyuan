@@ -1,3 +1,8 @@
 {
-  "addTopBarIcon": "PluginSampleViteVue"
+  "sidebar": "Sidebar",
+  "addNewSection": "Add new section",
+  "minimizeTooltip": "Min Ctrl+W",
+  "removeSectionTooltip": "Remove {title} section",
+  "sectionFallback": "Section {number}",
+  "addToSidebar": "Add to sidebar"
 }

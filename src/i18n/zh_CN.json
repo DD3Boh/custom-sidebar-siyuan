@@ -1,3 +1,8 @@
 {
-  "addTopBarIcon": "PluginSampleViteVue"
+  "sidebar": "侧边栏",
+  "addNewSection": "添加新部分",
+  "minimizeTooltip": "最小化 Ctrl+W",
+  "removeSectionTooltip": "移除 {title} 部分",
+  "sectionFallback": "部分 {number}",
+  "addToSidebar": "添加到侧边栏"
 }

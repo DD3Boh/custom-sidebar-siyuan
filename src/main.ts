@@ -8,6 +8,7 @@ import { createApp } from 'vue'
 import AppComponent from './App.vue'
 import { App } from "siyuan";
 import { getSectionSavesFromDisk, saveSectionsToDisk } from "./utils/storage-helper";
+import { initI18n, i18n } from "./utils/i18n";
 
 let plugin = null
 export function usePlugin(pluginProps?: Plugin): Plugin {
@@ -59,13 +60,16 @@ export function init(plugin: Plugin) {
   // bind plugin hook
   usePlugin(plugin);
 
+  // Initialize i18n
+  initI18n(plugin);
+
   const DOCK_TYPE = "custom-dock";
   plugin.addDock({
       config: {
         position: "LeftTop",
         size: { width: 200, height: 0 },
         icon: "iconDock",
-        title: "Sidebar",
+        title: i18n("sidebar"),
         hotkey: "⌥⌘W",
       },
       data: {},

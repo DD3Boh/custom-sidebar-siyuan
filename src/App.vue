@@ -7,6 +7,9 @@ import { getDocInfo, getPathByID, listDocsByPath } from './api'
 import { VueDraggable } from 'vue-draggable-plus'
 import { loadSectionsFromDisk, saveSectionsToDisk } from './utils/storage-helper'
 import { decodeHtmlEntities } from './utils'
+import { useI18n } from './utils/i18n'
+
+const { i18n } = useI18n()
 
 const plugin = usePlugin();
 const sections = ref<SidebarSectionData[]>([]);
@@ -34,7 +37,7 @@ const addSectionById = async (id: string) => {
 
     sections.value.push({
       id: id,
-      title: decodeHtmlEntities(docInfo.name || `Section ${sections.value.length + 1}`),
+      title: decodeHtmlEntities(docInfo.name || i18n('sectionFallback', { number: sections.value.length + 1 })),
       icon: docInfo.icon,
       expanded: true,
       items: subDirs.files.map(doc => ({
@@ -108,7 +111,7 @@ const handleMinimize = () => {
 
 <template>
   <DockContainer
-    title="Sidebar"
+    :title="i18n('sidebar')"
     @add-section="addSection"
     @minimize="handleMinimize"
   >
