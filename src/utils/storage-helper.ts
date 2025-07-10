@@ -34,13 +34,13 @@ export async function loadSectionsFromDisk(): Promise<SidebarSectionData[]> {
     const items = subDirs.files.map(doc => ({
       id: doc.id,
       title: doc.name.replace(/\.sy$/, ''),
-      icon: doc.icon
+      icon: doc.icon || "1f4d1"
     }));
 
     return {
       id: section.id,
       title: info.name || `Section ${loadedSections.length + 1}`,
-      icon: info.icon,
+      icon: info.icon || "1f4d1",
       expanded: section.expanded !== undefined ? section.expanded : true,
       items: items
     };
