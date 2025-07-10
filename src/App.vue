@@ -153,7 +153,7 @@ const handleMinimize = () => {
 
 <style scoped>
 .app-container {
-  padding: 16px;
+  padding: 0px 16px;
   height: 100%;
   box-sizing: border-box;
   overflow-y: auto;
