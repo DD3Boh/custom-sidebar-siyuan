@@ -3,31 +3,12 @@ import { onMounted, ref } from 'vue'
 import { openDoc, usePlugin } from './main'
 import SidebarSection from './components/Sidebar/SidebarSection.vue'
 import DockContainer from './components/Sidebar/DockContainer.vue'
-import { getDocInfo, getFileBlob, getPathByID, listDocsByPath, putFile } from './api'
+import { getDocInfo, getPathByID, listDocsByPath } from './api'
 import { VueDraggable } from 'vue-draggable-plus'
-
-interface SidebarSectionData {
-  id: string
-  title: string
-  icon?: string,
-  items?: SidebarItem[]
-  expanded?: boolean
-}
-
-interface SidebarItem {
-  id: string
-  title: string
-  icon?: string
-}
-
-interface SidebarSectionSave {
-  id: string
-  expanded?: boolean
-}
+import { loadSectionsFromDisk, saveSectionsToDisk } from './utils/storage-helper'
 
 const plugin = usePlugin();
 const sections = ref<SidebarSectionData[]>([]);
-const sectionsFileName = 'sections.json';
 
 const addSection = async () => {
   const clipboard = await addFromClipboard();
@@ -62,7 +43,7 @@ const addSectionById = async (id: string) => {
       }))
     })
 
-    saveSectionIds();
+    await saveSectionsToDisk(sections.value);
     console.log(`Section added with ID: ${id}`);
   } catch (error) {
     console.error('Error adding section by ID:', error);
@@ -75,7 +56,7 @@ const removeSection = (id: string) => {
     sections.value = sections.value.filter(section => section.id !== id)
   }
 
-  saveSectionIds();
+  saveSectionsToDisk(sections.value);
 }
 
 const onSectionClick = (id: string) => {
@@ -94,61 +75,19 @@ const addFromClipboard = async (): Promise<string | undefined> => {
 };
 
 onMounted(async () => {
-  const savedSections = await getFileBlob(`data/storage/petal/custom-sidebar/${sectionsFileName}`);
-
-  console.log("Loading saved sections from:", savedSections);
-  let parsed: SidebarSectionSave[] = [];
-  if (savedSections) {
-    const text = await savedSections.text();
-    parsed = JSON.parse(text) as SidebarSectionSave[];
-  }
-
-  const loadedSections = await Promise.all(parsed.map(async section => {
-    const info = await getDocInfo(section.id);
-    const path = await getPathByID(section.id);
-    const subDirs = await listDocsByPath(path.notebook, path.path);
-    const items = subDirs.files.map(doc => ({
-      id: doc.id,
-      title: doc.name.replace(/\.sy$/, ''),
-      icon: doc.icon
-    }));
-
-    return {
-      id: section.id,
-      title: info.name || `Section ${sections.value.length + 1}`,
-      icon: info.icon,
-      expanded: section.expanded !== undefined ? section.expanded : true,
-      items: items
-    };
-  }));
-
-  sections.value = loadedSections;
+  sections.value = await loadSectionsFromDisk();
 });
-
-const saveSectionIds = async () => {
-  const sectionsData = sections.value.map(section => ({
-    id: section.id,
-    expanded: section.expanded,
-  }));
-  const jsonData = JSON.stringify(sectionsData, null, 2);
-  console.log("Saving section IDs:", jsonData);
-
-  const file = new File([jsonData], sectionsFileName, { type: 'application/json' });
-  await putFile(`data/storage/petal/custom-sidebar/${sectionsFileName}`, false, file);
-}
 
 const onSectionReorder = () => {
   console.log("Sections reordered:", sections.value.map(s => s.title));
-  saveSectionIds();
+  saveSectionsToDisk(sections.value);
 }
 
 const toggleSectionExpanded = (sectionId: string) => {
   const section = sections.value.find(s => s.id === sectionId);
-  if (section) {
-    section.expanded = !section.expanded;
-  }
+  if (section) section.expanded = !section.expanded;
 
-  saveSectionIds();
+  saveSectionsToDisk(sections.value);
 }
 
 // Expose functions to be called from main.ts
