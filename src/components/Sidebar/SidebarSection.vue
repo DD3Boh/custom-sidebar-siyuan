@@ -141,9 +141,8 @@ const handleToggleExpanded = () => {
 .sidebar-section {
   display: flex;
   flex-direction: column;
-  margin-bottom: 16px;
   border-bottom: 1px solid var(--b3-border-color);
-  padding-bottom: 12px;
+  padding: 10px 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
   border-radius: 4px;
