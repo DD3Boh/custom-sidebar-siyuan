@@ -52,6 +52,18 @@ export default class PluginSample extends Plugin {
 
     console.log('Plugin loaded, the plugin is ', this)
 
+    this.eventBus.on("open-menu-doctree", (event) => {
+      console.log('open-menu-doctree event triggered', event);
+      if (event && event.detail) {
+        event.detail.menu.addItem({
+          label: "Open Plugin Settings",
+          click(element, event) {
+            console.log('Open Plugin Settings clicked', element, event);
+          },
+        });
+      }
+    });
+
     init(this)
   }
 
