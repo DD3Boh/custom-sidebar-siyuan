@@ -24,6 +24,7 @@ export default class PluginSample extends Plugin {
         const nodeId = event.detail.elements[0].dataset.nodeId || null;
         event.detail.menu.addItem({
           label: i18n("addToSidebar"),
+          icon: "iconAdd",
           async click() {
             if (nodeId) await addSectionById(nodeId);
           },
