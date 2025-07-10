@@ -11,17 +11,14 @@
     "all"
   ],
   "displayName": {
-    "default": "en_US",
-    "en_US": "custom-sidebar",
-    "zh_CN": "custom-sidebar"
+    "en_US": "Custom Sidebar",
+    "zh_CN": "自定义侧边栏"
   },
   "description": {
-    "default": "en_US",
-    "en_US": "custom-sidebar",
-    "zh_CN": "custom-sidebar"
+    "en_US": "Custom Sidebar plugin, to create a personalized dock with the documents you choose.",
+    "zh_CN": "自定义侧边栏插件，用于创建包含您选择的文档的个性化停靠栏。"
   },
   "readme": {
-    "default": "en_US",
     "en_US": "README.md",
     "zh_CN": "README_zh_CN.md"
   },

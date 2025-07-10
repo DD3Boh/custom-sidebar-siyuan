@@ -1,5 +1,4 @@
 import {
-  Dock,
   getFrontend,
   openMobileFileById,
   openTab,
@@ -13,12 +12,11 @@ import { getSectionSavesFromDisk, saveSectionsToDisk } from "./utils/storage-hel
 let plugin = null
 export function usePlugin(pluginProps?: Plugin): Plugin {
   console.log('usePlugin', pluginProps, plugin)
-  if (pluginProps) {
-    plugin = pluginProps
-  }
-  if (!plugin && !pluginProps) {
+  if (pluginProps) plugin = pluginProps
+
+  if (!plugin && !pluginProps)
     console.error('need bind plugin')
-  }
+
   return plugin;
 }
 
@@ -57,7 +55,6 @@ export async function addSectionById(id: string) {
 
 let app = null
 let appInstance = null
-let localDock: Dock = null
 export function init(plugin: Plugin) {
   // bind plugin hook
   usePlugin(plugin);
@@ -67,8 +64,8 @@ export function init(plugin: Plugin) {
       config: {
         position: "LeftTop",
         size: { width: 200, height: 0 },
-        icon: "iconHeart",
-        title: "Custom Dock",
+        icon: "iconDock",
+        title: "Sidebar",
         hotkey: "⌥⌘W",
       },
       data: {},
@@ -80,8 +77,6 @@ export function init(plugin: Plugin) {
         console.log(DOCK_TYPE + " update");
       },
       init: (dock) => {
-          localDock = dock;
-
           // Mount Vue app directly to the dock element
           app = createApp(AppComponent);
           appInstance = app.mount(dock.element);

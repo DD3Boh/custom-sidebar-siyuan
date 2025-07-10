@@ -108,7 +108,7 @@ const handleMinimize = () => {
 
 <template>
   <DockContainer
-    title="Custom Dock"
+    title="Sidebar"
     @add-section="addSection"
     @minimize="handleMinimize"
   >

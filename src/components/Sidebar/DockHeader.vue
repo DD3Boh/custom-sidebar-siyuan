@@ -3,7 +3,7 @@
     <!-- Mobile layout -->
     <div v-if="isMobile" class="toolbar toolbar--border toolbar--dark">
       <svg class="toolbar__icon">
-        <use xlink:href="#iconEmoji"></use>
+        <use xlink:href="#iconDock"></use>
       </svg>
       <div class="toolbar__text">{{ title }}</div>
       <span class="fn__flex-1"></span>
@@ -33,7 +33,7 @@
     <div v-else class="block__icons">
       <div class="block__logo">
         <svg class="block__logoicon">
-          <use xlink:href="#iconEmoji"></use>
+          <use xlink:href="#iconDock"></use>
         </svg>
         {{ title }}
       </div>
@@ -71,7 +71,7 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  title: 'Custom Dock'
+  title: 'Sidebar'
 })
 
 defineEmits<{

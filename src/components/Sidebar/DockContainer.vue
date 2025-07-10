@@ -21,7 +21,7 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  title: 'Custom Dock'
+  title: 'Sidebar'
 })
 
 const emit = defineEmits<{
