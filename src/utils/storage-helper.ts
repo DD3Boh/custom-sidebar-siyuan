@@ -1,4 +1,5 @@
 import { getDocInfo, getFileBlob, getPathByID, listDocsByPath, putFile } from "@/api";
+import { decodeHtmlEntities } from "@/utils";
 
 const sectionsFileName = 'sections.json';
 const sectionsFilePath = `data/storage/petal/custom-sidebar/${sectionsFileName}`;
@@ -33,13 +34,13 @@ export async function loadSectionsFromDisk(): Promise<SidebarSectionData[]> {
     const subDirs = await listDocsByPath(path.notebook, path.path);
     const items = subDirs.files.map(doc => ({
       id: doc.id,
-      title: doc.name.replace(/\.sy$/, ''),
+      title: decodeHtmlEntities(doc.name.replace(/\.sy$/, '')),
       icon: doc.icon || "1f4d1"
     }));
 
     return {
       id: section.id,
-      title: info.name || `Section ${loadedSections.length + 1}`,
+      title: decodeHtmlEntities(info.name || `Section ${loadedSections.length + 1}`),
       icon: info.icon || "1f4d1",
       expanded: section.expanded !== undefined ? section.expanded : true,
       items: items

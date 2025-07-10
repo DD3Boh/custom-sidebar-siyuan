@@ -6,6 +6,7 @@ import DockContainer from './components/Sidebar/DockContainer.vue'
 import { getDocInfo, getPathByID, listDocsByPath } from './api'
 import { VueDraggable } from 'vue-draggable-plus'
 import { loadSectionsFromDisk, saveSectionsToDisk } from './utils/storage-helper'
+import { decodeHtmlEntities } from './utils'
 
 const plugin = usePlugin();
 const sections = ref<SidebarSectionData[]>([]);
@@ -33,12 +34,12 @@ const addSectionById = async (id: string) => {
 
     sections.value.push({
       id: id,
-      title: docInfo.name || `Section ${sections.value.length + 1}`,
+      title: decodeHtmlEntities(docInfo.name || `Section ${sections.value.length + 1}`),
       icon: docInfo.icon,
       expanded: true,
       items: subDirs.files.map(doc => ({
         id: doc.id,
-        title: doc.name.replace(/\.sy$/, ''),
+        title: decodeHtmlEntities(doc.name.replace(/\.sy$/, '')),
         icon: doc.icon
       }))
     })
