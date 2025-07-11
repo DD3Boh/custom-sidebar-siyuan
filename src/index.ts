@@ -38,6 +38,4 @@ export default class CustomSidebarPlugin extends Plugin {
   onunload() {
     destroy()
   }
-
-  openSetting() {}
 }
