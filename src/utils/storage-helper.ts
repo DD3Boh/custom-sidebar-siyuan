@@ -2,7 +2,7 @@ import { getDocInfo, getFileBlob, getPathByID, listDocsByPath, putFile } from "@
 import { decodeHtmlEntities } from "@/utils";
 
 const sectionsFileName = 'sections.json';
-const sectionsFilePath = `data/storage/petal/custom-sidebar/${sectionsFileName}`;
+const sectionsFilePath = `data/storage/petal/custom-sidebar-siyuan/${sectionsFileName}`;
 
 export async function saveSectionsToDisk(sections: SidebarSectionData[] | SidebarSectionSave[]): Promise<void> {
   const sectionsData = sections.map(section => ({
