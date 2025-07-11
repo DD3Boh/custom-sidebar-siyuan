@@ -6,7 +6,7 @@ import "@/index.scss";
 import { destroy, init, addSectionById } from '@/main'
 import { i18n } from './utils/i18n';
 
-export default class PluginSample extends Plugin {
+export default class CustomSidebarPlugin extends Plugin {
   // Run as mobile
   public isMobile: boolean
   // Run in browser
