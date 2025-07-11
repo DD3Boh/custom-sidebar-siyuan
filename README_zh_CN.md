@@ -71,7 +71,7 @@
 
 ## 更新日志
 
-查看 [CHANGELOG.md](CHANGELOG.md) 了解变更和更新列表。
+查看 [CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md) 了解变更和更新列表。
 
 ## 致谢
 
