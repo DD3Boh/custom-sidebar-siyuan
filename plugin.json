@@ -2,7 +2,7 @@
   "name": "custom-sidebar-siyuan",
   "author": "DD3Boh",
   "url": "https://github.com/DD3Boh/custom-sidebar-siyuan",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "2.10.14",
   "backends": [
     "all"
