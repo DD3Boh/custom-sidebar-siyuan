@@ -17,7 +17,7 @@ import { computed } from 'vue'
 import { getFrontend } from 'siyuan'
 import DockHeader from './DockHeader.vue'
 import { useI18n } from '@/utils/i18n'
-import { refreshFiletree } from '@/api'
+import { rebuildDataIndex } from '@/api'
 
 interface Props {
   title?: string
@@ -51,7 +51,7 @@ const handleMinimize = () => {
 }
 
 const handleRefresh = () => {
-  refreshFiletree()
+  rebuildDataIndex()
 }
 </script>
 

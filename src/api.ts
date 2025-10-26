@@ -167,8 +167,8 @@ export async function listDocsByPath(
   return request(url, data);
 }
 
-export async function refreshFiletree() {
-  return request("/api/filetree/refreshFiletree", {});
+export async function rebuildDataIndex() {
+  return request("/api/system/rebuildDataIndex", {});
 }
 
 // **************************************** Asset Files ****************************************
